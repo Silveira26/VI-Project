@@ -11,9 +11,7 @@
     <script src="https://d3js.org/d3.v6.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="../js/anual.js"></script>
-    <script src="../js/gender.js"></script>
-
+    <script src="../js/index.js"></script>
     <script src="../js/ages.js"></script>
 
 </head>
@@ -28,51 +26,63 @@
             <a class="nav-link" href="anual.html">Anual</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active">Idade</a>
+            <a class="nav-link active" href="age.html">Idade</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link">Mapa</a>
+            <a class="nav-link" href="map.html">Mapa</a>
         </li>
     </ul>
 </nav>
 
-<main class="container-fluid m-3 d-flex flex-row">
-    <div id="age_div" class="flex-grow-1 p-2">
-        <select id="year-toggle" name="year" onchange="updateYear(this.value)">
-            <option class="dropdown-item" value="2015" selected>2015</option>
-            <option class="dropdown-item" value="2016">2016</option>
-        </select>
-        <label for="ageRange" class="form-label">Idade:</label>
-        <label id="current_age"></label>
-        <div class="d-flex flex-row p-2">
-            <h5>16</h5>
-            <input type="range"
-                   class="form-range"
-                   min="16"
-                   max="80"
-                   id="ageRange"
-                   oninput="updateAgeText(this.value)"
-                   onchange="updateAge(this.value)">
-            <h5>80</h5>
+<main class="container-fluid m-3">
+    <select id="year-toggle" name="year" onchange="updateYear(this.value)">
+        <option class="dropdown-item" value="2015" selected>2015</option>
+        <option class="dropdown-item" value="2016">2016</option>
+        <option class="dropdown-item" value="2016">2017</option>
+        <option class="dropdown-item" value="2018">2018</option>
+        <option class="dropdown-item" value="2020">2020</option>
+    </select>
+    <div class="container-fluid m-3 d-flex flex-row">
+        <div id="age_div" class="flex-grow-1 p-2">
+            <label for="ageRange" class="form-label">Idade:</label>
+            <label id="current_age"></label>
+            <div class="d-flex flex-row p-2">
+                <h5>16</h5>
+                <input type="range"
+                       class="form-range"
+                       min="16"
+                       max="80"
+                       id="ageRange"
+                       oninput="updateAgeText(this.value)"
+                       onchange="updateAge(this.value)">
+                <h5>80</h5>
+            </div>
+            <h4 id="age_title"></h4>
+            <div id="age_bar"></div>
+            <div id="age_legend"></div>
         </div>
-        <div id="age_bar"></div>
-        <div id="age_legend"></div>
+        <div id="group_div" class="flex-grow-1">
+            <h4 id="group_title"></h4>
+            <div id="group_bar"></div>
+            <div id="group_legend"></div>
+        </div>
     </div>
-    <div class="flex-grow-1"></div>
 </main>
 
 <script>
-
     function updateYear(value){
-        console.log(value)
         currentYear = value;
 
-        var filteredData = ageData.filter(function(d) {
+        let filteredData = ageData.filter(function (d) {
             return d.year === parseInt(currentYear);
         });
 
 
-        drawAgeChart(filteredData[0]);
+        drawAgePieChart(filteredData[0]);
+        drawAgeHistogram(filteredData)
+
+        document.getElementById("group_title").innerText = "Taxa de Aprovação por Grupos - "+currentYear
+        document.getElementById("age_title").innerText = "Taxa de Aprovação por Idade - "+currentYear
 
     }
     function updateAgeText(value){
@@ -86,7 +96,7 @@
             return d.year === parseInt(currentYear);
         });
 
-        drawAgeChart(filteredData[value - 15])
+        drawAgePieChart(filteredData[value - 15])
     }
 
 

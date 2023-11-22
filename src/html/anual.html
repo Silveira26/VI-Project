@@ -11,10 +11,9 @@
     <script src="https://d3js.org/d3.v6.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="../js/index.js"></script>
     <script src="../js/anual.js"></script>
     <script src="../js/gender.js"></script>
-
-    <script src="../js/ages.js"></script>
 
 </head>
 <body>
@@ -31,7 +30,7 @@
             <a class="nav-link" href="age.html">Idade</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link">Mapa</a>
+            <a class="nav-link" href="map.html">Mapa</a>
         </li>
     </ul>
 </nav>
@@ -56,7 +55,7 @@
         <div id="gender_div" class="flex-grow-1">
             <div class="btn-group" role="group" aria-label="Basic outlined example">
                 <button type="button" class="btn btn-outline-primary" onclick="genderVis(1,2, 0)">Marcados</button>
-                <button type="button" class="btn btn-outline-primary" onclick="genderVis(4,5, 1)">Realizados</button>
+                <button type="button" class="btn btn-outline-primary" onclick="genderVis(3,4, 1)">Realizados</button>
                 <button type="button" class="btn btn-outline-primary" onclick="genderVis(5,6, 2)">%</button>
             </div>
             <div class="d-flex flex-column text-center">
@@ -68,11 +67,26 @@
 </main>
 
 <script>
+
+    function zoomInApproval(){
+        minApprovalScale += 10000;
+        drawApprovalChart()
+    }
+
+    function zoomOutApproval(){
+        if(minApprovalScale > 0){
+            minApprovalScale -= 10000;
+            drawApprovalChart()
+        }
+    }
+
     const passModeCheckbox = document.getElementById('pass_mode')
 
     passModeCheckbox.addEventListener("change", (event) => {
         passMode = !event.currentTarget.checked
         drawApprovalChart()
+        drawApprovalLegend()
+        drawGenderChart(5,6,2)
     })
 
     genderVis(1,2, 0)
