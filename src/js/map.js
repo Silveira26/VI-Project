@@ -24,8 +24,7 @@ function createCenterTable(){
     document.getElementById("center_title").innerText = titles[approvalValue]
     document.getElementById("center_subtitle").innerText = subtitles[sortingMethod];
 
-    d3.csv("../../IMT_data/parsed_data/exam_center_parsed_data_all_years.csv")
-        .then(function (data) {
+    d3.csv("../../IMT_data/parsed_data/exam_center_parsed_data_all_years.csv", function (data) {
 
             data.forEach(function (d) {
                 d.year = +d.year;
@@ -71,5 +70,21 @@ function createCenterTable(){
 }
 
 function createMap(){
+    var map = new Datamap({
+        element: document.getElementById('map_container'),
+        geographyConfig: {
+            dataJson: 'https://rawgit.com/markmarkoh/datamaps/master/src/js/data/prt.json'
+        },
+        scope: 'prt',
+        setProjection: function(element, options) {
+            var projection, path;
+            projection = d3.geo.mercator()
+                .center([-8.80, 38.45])
+                .scale(3000)
+                .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+            path = d3.geo.path().projection( projection );
+            return {path: path, projection: projection};
+        }
 
+    });
 }
