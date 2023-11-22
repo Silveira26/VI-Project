@@ -1,23 +1,23 @@
 const titulos = [
-    "Provas Práticas Marcadas por Género",
-    "Provas Práticas Realizadas por Género",
-    "% de Aprovação por Género",
-    "% de Reprovação por Género"
+    {titulo : "Provas Práticas Marcadas por Género"},
+    {titulo: "Provas Práticas Realizadas por Género"},
+    {
+        titulo: () => {
+            return passMode ? "% de Aprovação por Género" : "% de Reprovação por Género"
+        }
+    }
 ]
 
 var genderData;
-var margin = {top: 50, right: 30, bottom: 50, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
 
 function drawGenderLegend(){
+    document.getElementById("gender_legend").innerHTML = ""
 
-    var labels = [
-        {label : "Homens", color : "#377eb8"},
-        {label: "Mulheres", color : "#cc6df1"}
-    ]
 
-    labels.map(d => console.log(d.color))
+    const labels = [
+        {label: "Homens", color: colorMasculino},
+        {label: "Mulheres", color: colorFeminino}
+    ];
 
     var svg = d3.select("#gender_legend")
         .append("svg")
@@ -55,7 +55,7 @@ function drawGenderLegend(){
 
 }
 
-function drawGenderChart(col1, col2, titulo){
+function drawGenderChart(col1, col2, modo){
     document.getElementById("gender_bar").innerHTML = ""
 
 
@@ -68,11 +68,19 @@ function drawGenderChart(col1, col2, titulo){
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
+    //Maneira estúpida de confirmar se estamos na vista de reprovação para
+    // ajustar o slice nos grupos dos de aprovação para os de reprovação
+    if(modo == 2 && !passMode){
+        col1 +=2;
+        col2 +=2;
+    }
+
     var subgroups = genderData.columns.slice(col1,col2+1);
+    console.log(subgroups)
 
     var color = d3.scaleOrdinal()
         .domain(subgroups)
-        .range(['#cc6df1', '#377eb8']);
+        .range([colorFeminino, colorMasculino]);
 
     // X axis
     var x = d3.scaleBand()
@@ -90,7 +98,7 @@ function drawGenderChart(col1, col2, titulo){
     var domainMax;
     var y;
 
-    if(titulo === "%"){
+    if(modo === 2){
         domainMax = 1
         y = d3.scaleLinear()
             .domain([0, domainMax])
@@ -142,6 +150,7 @@ function drawGenderChart(col1, col2, titulo){
         tooltip.style("opacity", 1)
     }
     const mousemove = function (event, d) {
+        console.log(d)
         tooltip
             .html("Percentagem:")
             .style("left", (event.pageX + 10) + "px")
@@ -160,10 +169,10 @@ function drawGenderChart(col1, col2, titulo){
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
-        .text(titulos[titulo]);
+        .text(titulos[modo].titulo);
 }
 
-function genderVis(col1, col2, titulo) {
+function genderVis(col1, col2, modo) {
 
     // Parse the Data
     d3.csv("../../IMT_data/parsed_data/gender_parsed_data_all_years.csv")
@@ -184,7 +193,7 @@ function genderVis(col1, col2, titulo) {
 
             genderData = data;
 
-            drawGenderChart(col1, col2, titulo);
+            drawGenderChart(col1, col2, modo);
 
         })
         .catch(function(error) {

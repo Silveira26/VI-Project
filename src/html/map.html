@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IMTVis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Mateus Almeida, Filipe Silveira">
+  <meta name="description" content="Plataforma de visualização de dados de aprovação do IMT">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://d3js.org/d3.v6.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://d3js.org/topojson.v1.js"></script>
+  <script src="https://rawgithub.com/markmarkoh/datamaps/master/dist/datamaps.none.min.js"></script>
+  <script src="https://rawgithub.com/markmarkoh/datamaps/master/dist/datamaps.prt.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4"></script>
+  <script src="../js/index.js"></script>
+  <script src="../js/map.js"></script>
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm d-flex flex-row p-2 bg-info justify-content-center">
+  <img src="../../assets/logo_IMT.png" class="navbar-brand" style="width: 10%;"/>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="homepage.html">Homepage</a>
+    </li>
+    <li class="nav-item ">
+      <a class="nav-link" href="anual.html">Anual</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="age.html">Idade</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active">Mapa</a>
+    </li>
+  </ul>
+</nav>
+
+<main class="container-fluid m-3 d-flex">
+
+  <div id="center_container" class="border flex-grow-1">
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+      <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(0)">Teórica</button>
+      <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(1)">Prático</button>
+      <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(2)">Total</button>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+      <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(0)">ASC</button>
+      <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(1)">DESC</button>
+      <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(2)">A-Z</button>
+    </div>
+    <h2 id="center_title"></h2>
+    <h6 id="center_subtitle"></h6>
+    <div id="center_vis"></div>
+  </div>
+
+  <div id="map_container" class="border flex-grow-1">
+
+  </div>
+
+</main>
+
+<script defer>
+
+  function changeApprovalValue(value){
+    approvalValue = value
+    createCenterTable()
+  }
+
+  function changeSortingMethod(value){
+    sortingMethod = value
+    createCenterTable("total")
+  }
+  createMap()
+  createCenterTable("total")
+</script>
+
+</body>
+</html>

@@ -1,31 +1,19 @@
+let maxApprovalScale = 250000;
+let minApprovalScale = 0;
+let approvalData;
 
-var maxApprovalScale = 250000;
-var minApprovalScale = 0;
-var approvalData;
-var passMode = true;
-var margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+const approvalTitle = () => {return passMode? "Aprovados" : "Reprovados";}
+const approvalColor = () => {return passMode? colorAprovados : colorReprovados;}
 
-
-function zoomInApproval(){
-    minApprovalScale += 10000;
-    drawApprovalChart()
-}
-
-function zoomOutApproval(){
-    if(minApprovalScale > 0){
-        minApprovalScale -= 10000;
-        drawApprovalChart()
-    }
-}
 
 function drawApprovalLegend(){
+    document.getElementById("approval_legend").innerHTML = ""
 
-    var labels = [
-        {label : "Marcados", color : "#377eb8"},
-        {label: "Realizados", color : "#cc6df1"},
-        {label: "Aprovados", color : "#68f26f"}
+
+    const labels = [
+        {label : "Marcados", color : colorMarcados},
+        {label: "Realizados", color : colorRealizados},
+        {label: approvalTitle(), color : approvalColor()}
     ]
 
 
@@ -105,7 +93,7 @@ function drawApprovalChart(){
         .attr("class", "line")
         .attr("d", line)
         .style("stroke-width", 2)
-        .style("stroke", "red")
+        .style("stroke", colorMarcados)
         .style("fill","none");
 
     // Draw PRT line
@@ -114,7 +102,7 @@ function drawApprovalChart(){
         .attr("class", "line")
         .attr("d", line)
         .style("stroke-width", 2)
-        .style("stroke", "green")
+        .style("stroke", colorRealizados)
         .style("fill","none");
 
     // Draw AT line
@@ -126,7 +114,9 @@ function drawApprovalChart(){
         .attr("class", "line")
         .attr("d", line)
         .style("stroke-width", 2)
-        .style("stroke", "blue")
+        .style("stroke", () => {
+            return passMode? colorAprovados : colorReprovados;
+        })
         .style("fill","none");
 
     // Tooltip
@@ -160,7 +150,9 @@ function drawApprovalChart(){
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
-        .text("Aprovação Anual");
+        .text(() => {
+            return passMode? "Aprovação Anual" : "Reprovação Anual";
+        });
 }
 
 
