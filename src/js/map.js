@@ -70,8 +70,16 @@ function createCenterTable(){
 }
 
 function createMap(){
+    document.getElementById("map_title").innerText = "Taxa de Aprovação por Distrito -" + currentYear
+
+    var bubbleData = [
+        { name: 'District1', radius: 20, latitude: 38.7253/*latitude value*/, longitude:  -9.1500/*longitude value*/, fillKey: 'district1' },
+        { name: 'District2', radius: 15, latitude: 41.1621 /*latitude value*/, longitude: -8.6220 /*longitude value*/, fillKey: 'district2' },
+        // Add more data for each district
+    ];
+
     var map = new Datamap({
-        element: document.getElementById('map_container'),
+        element: document.getElementById('map_vis'),
         geographyConfig: {
             dataJson: 'https://rawgit.com/markmarkoh/datamaps/master/src/js/data/prt.json'
         },
@@ -82,9 +90,30 @@ function createMap(){
                 .center([-8.80, 38.45])
                 .scale(3000)
                 .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
-            path = d3.geo.path().projection( projection );
-            return {path: path, projection: projection};
+            path = d3.geo.path().projection(projection);
+            return { path: path, projection: projection };
+        },
+        fills: {
+            defaultFill: '#ABDDA4',
+            district1: '#0fa0fa',
+            district2: '#F47E7E',
+            // Add more fill colors for each district
+        },
+        data: {}, // Initialize an empty data object for bubbles
+        geographyConfig: {
+            highlightBorderColor: '#bada55',
+            popupTemplate: function (geo, data) {
+                return ['<div class="hoverinfo"><strong>',
+                    'District: ' + data.name,
+                    '</strong></div>'].join('');
+            }
         }
+    });
 
+// Add bubbles to the map
+    map.bubbles(bubbleData, {
+        popupTemplate: function (geo, data) {
+            return '<div class="hoverinfo"><strong>' + data.name + '</strong></div>';
+        }
     });
 }

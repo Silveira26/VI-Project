@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+    <title>FMI Census Analysis</title>
+    <!--<script type="text/javascript" src="d3.min.js"></script>-->
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script src="https://d3js.org/topojson.v1.js"></script>
+    <script src="https://rawgithub.com/markmarkoh/datamaps/master/dist/datamaps.none.min.js"></script>
+    <script src="https://rawgithub.com/markmarkoh/datamaps/master/dist/datamaps.prt.js"></script>
+   </head>
 <body>
-$END$
+<div id="container" style="position: relative; width: 300px; height: 600px;"></div>
+<script>
+    var map = new Datamap({
+        element: document.getElementById('container'),
+        geographyConfig: {
+            dataJson: 'https://rawgit.com/markmarkoh/datamaps/master/src/js/data/prt.json'
+        },
+        scope: 'prt',
+        setProjection: function(element, options) {
+            var projection, path;
+            projection = d3.geo.mercator()
+                .center([-8.80, 38.45])
+                .scale(3000)
+                .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+            path = d3.geo.path().projection( projection );
+            return {path: path, projection: projection};
+        }
+
+    });
+</script>
 </body>
 </html>
