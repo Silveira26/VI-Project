@@ -1,3 +1,5 @@
+let mapData;
+
 let approvalValue = 2; //0: teoricos, 1: praticos, 2: total
 let sortingMethod = 2; //0: asc, 1: desc, 2: a-z
 const sortingMethods = [
@@ -17,7 +19,13 @@ const subtitles = [
     "Ordenado Alfabeticamente"
 ]
 
-function createCenterTable(){
+const mapSubtitles = [
+    "Exames Teóricos",
+    "Exames Práticos",
+    "Total"
+]
+
+function drawCenterTable(){
     var root = document.getElementById("center_vis");
     root.innerHTML = ""
 
@@ -69,14 +77,64 @@ function createCenterTable(){
         });
 }
 
-function createMap(){
+function readValuesForMap(districts, filteredData){
+
+    console.log(filteredData)
+
+    districts.forEach(element => {
+        let index = filteredData.findIndex(obj => obj.district === element.name);
+        let approval; //valor de aprovação escolhido
+
+        if(approvalValue === 0){
+            approval = filteredData[index].TA // Aprovação Exames teóricos
+        }
+        else if(approvalValue === 1){
+            approval = filteredData[index].PA // Aprovação Exames Práticos
+        }
+        else{
+            approval = filteredData[index].SA // Aprovação Total
+        }
+
+
+        element.value = approval * 100
+        element.radius = approval * 20
+    })
+
+    return districts
+}
+
+function drawMap(){
+    document.getElementById("map_vis").innerHTML = ""
     document.getElementById("map_title").innerText = "Taxa de Aprovação por Distrito -" + currentYear
+    document.getElementById("map_subtitle").innerText = mapSubtitles[approvalValue];
+
+
+    let data = mapData.filter(function (d){
+        return d.year === parseInt(currentYear);
+    })
 
     var bubbleData = [
-        { name: 'District1', radius: 20, latitude: 38.7253/*latitude value*/, longitude:  -9.1500/*longitude value*/, fillKey: 'district1' },
-        { name: 'District2', radius: 15, latitude: 41.1621 /*latitude value*/, longitude: -8.6220 /*longitude value*/, fillKey: 'district2' },
-        // Add more data for each district
+        { name: 'Lisboa', radius: 20, latitude: 38.7253, longitude:  -9.1500, fillKey: 'district' },
+        { name: 'Porto', radius: 15, latitude: 41.1621 , longitude: -8.6220, fillKey: 'district' },
+        { name: 'Setúbal', radius: 15, latitude: 38.5243 , longitude: -8.8926, fillKey: 'district' },
+        { name: 'Santarém', radius: 15, latitude: 39.2339 , longitude: -8.6861, fillKey: 'district' },
+        { name: 'Viana do Castelo', radius: 15, latitude: 41.7000 , longitude: -8.8333, fillKey: 'district' },
+        { name: 'Bragança', radius: 15, latitude: 41.8067 , longitude: -6.7589, fillKey: 'district' },
+        { name: 'Braga', radius: 15, latitude: 41.5503 , longitude: -8.4200, fillKey: 'district' },
+        { name: 'Vila Real', radius: 15, latitude: 41.2958 , longitude: -7.7461, fillKey: 'district' },
+        { name: 'Castelo Branco', radius: 15, latitude: 39.8167 , longitude: -7.5000, fillKey: 'district' },
+        { name: 'Coimbra', radius: 15, latitude: 40.2111 , longitude: -8.4292, fillKey: 'district' },
+        { name: 'Leiria', radius: 15, latitude: 39.7500 , longitude: -8.8000, fillKey: 'district' },
+        { name: 'Guarda', radius: 15, latitude: 40.5333 , longitude: -7.3333, fillKey: 'district' },
+        { name: 'Viseu', radius: 15, latitude: 40.6667 , longitude: -7.9167, fillKey: 'district' },
+        { name: 'Aveiro', radius: 15, latitude: 40.6333 , longitude: -8.6500, fillKey: 'district' },
+        { name: 'Évora', radius: 15, latitude: 38.5667 , longitude: -7.9000, fillKey: 'district' },
+        { name: 'Portalegre', radius: 15, latitude: 39.3167, longitude: -7.4167, fillKey: 'district' },
+        { name: 'Beja', radius: 15, latitude: 38.0333, longitude: -7.8833, fillKey: 'district' },
+        { name: 'Faro', radius: 15, latitude: 37.0161, longitude: -7.9350, fillKey: 'district' },
     ];
+
+    bubbleData = readValuesForMap(bubbleData, data);
 
     var map = new Datamap({
         element: document.getElementById('map_vis'),
@@ -88,15 +146,14 @@ function createMap(){
             var projection, path;
             projection = d3.geo.mercator()
                 .center([-8.80, 38.45])
-                .scale(3000)
+                .scale(5000)
                 .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
             path = d3.geo.path().projection(projection);
             return { path: path, projection: projection };
         },
         fills: {
-            defaultFill: '#ABDDA4',
-            district1: '#0fa0fa',
-            district2: '#F47E7E',
+            defaultFill: colorMarcados,
+            district: colorAprovados,
             // Add more fill colors for each district
         },
         data: {}, // Initialize an empty data object for bubbles
@@ -110,10 +167,27 @@ function createMap(){
         }
     });
 
-// Add bubbles to the map
+    // Add bubbles to the map
     map.bubbles(bubbleData, {
         popupTemplate: function (geo, data) {
-            return '<div class="hoverinfo"><strong>' + data.name + '</strong></div>';
+            return '<div class="hoverinfo"><strong>Distrito: ' + data.name + '<br>Aprovação: ' + data.value+'%</strong></div>';
         }
+    });
+}
+function createMap(){
+    d3.csv("../../IMT_data/parsed_data/district_parsed_data_all_years.csv", function (data){
+
+        data.forEach(function(d) {
+            d.year = +d.year;
+            d.district = d.district;
+            d.TA = +d.TA;
+            d.PA = +d.PA;
+            d.SA = +d.SA;
+        });
+
+
+        mapData = data;
+
+        drawMap()
     });
 }

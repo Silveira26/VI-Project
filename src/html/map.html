@@ -38,7 +38,15 @@
   </ul>
 </nav>
 
+<select id="year-toggle" name="year" onchange="updateYear(this.value)">
+  <option class="dropdown-item" value="2015" selected>2015</option>
+  <option class="dropdown-item" value="2016">2016</option>
+  <option class="dropdown-item" value="2017">2017</option>
+  <option class="dropdown-item" value="2018">2018</option>
+  <option class="dropdown-item" value="2020">2020</option>
+</select>
 <main class="container-fluid m-3 d-flex">
+
 
   <div id="center_container" class="border flex-grow-1">
     <div class="btn-group" role="group" aria-label="Basic outlined example">
@@ -58,7 +66,8 @@
 
   <div id="map_container" class="border flex-grow-1">
     <h3 id="map_title"></h3>
-    <div id="map_vis" style="position: relative; width: 300px; height: 600px;"></div>
+    <h6 id="map_subtitle"></h6>
+    <div id="map_vis" style="position: relative; height: 850px;"></div>
 
   </div>
 
@@ -66,17 +75,25 @@
 
 <script defer>
 
+  function updateYear(value){
+    currentYear = value;
+
+    drawCenterTable()
+    drawMap()
+  }
+
   function changeApprovalValue(value){
     approvalValue = value
-    createCenterTable()
+    drawCenterTable()
+    drawMap()
   }
 
   function changeSortingMethod(value){
     sortingMethod = value
-    createCenterTable("total")
+    drawCenterTable()
   }
   createMap()
-  createCenterTable("total")
+  drawCenterTable()
 </script>
 
 </body>
