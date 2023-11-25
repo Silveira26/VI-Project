@@ -2,18 +2,22 @@ let maxApprovalScale = 250000;
 let minApprovalScale = 0;
 let approvalData;
 
-const approvalTitle = () => {return passMode? "Aprovados" : "Reprovados";}
-const approvalColor = () => {return passMode? colorAprovados : colorReprovados;}
+const approvalTitle = () => {
+    return passMode ? "Aprovados" : "Reprovados";
+}
+const approvalColor = () => {
+    return passMode ? colorAprovados : colorReprovados;
+}
 
 
-function drawApprovalLegend(){
+function drawApprovalLegend() {
     document.getElementById("approval_legend").innerHTML = ""
 
 
     const labels = [
-        {label : "Marcados", color : colorMarcados},
-        {label: "Realizados", color : colorRealizados},
-        {label: approvalTitle(), color : approvalColor()}
+        {label: "Marcados", color: colorMarcados},
+        {label: "Realizados", color: colorRealizados},
+        {label: approvalTitle(), color: approvalColor()}
     ]
 
 
@@ -53,7 +57,7 @@ function drawApprovalLegend(){
 
 }
 
-function drawApprovalChart(){
+function drawApprovalChart() {
     document.getElementById("approval_bar").innerHTML = ""
 
     // append the svg object to the body of the page
@@ -65,10 +69,13 @@ function drawApprovalChart(){
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    var x = d3.scaleBand()
-        .domain(approvalData.map(function(d) { return d.year; }))
-        .range([0, width])
-        .padding(0.2);
+    var x = d3.scaleTime()
+        .domain(d3.extent(approvalData, function(d) { return d.year; }))
+        .range([0, width]);
+
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).ticks(d3.timeYear).tickFormat(d3.timeFormat('%Y')));
 
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
@@ -84,40 +91,49 @@ function drawApprovalChart(){
 
     // Line function
     var line = d3.line()
-        .x(function(d) { return x(d.year); })
-        .y(function(d) { return y(d.value); });
+        .x(function (d) {
+            return x(d.year);
+        })
+        .y(function (d) {
+            return y(d.value);
+        });
 
     // Draw PMT line
     svg.append("path")
-        .data([approvalData.map(function(d) { return { year: d.year, value: d.PMT }; })])
-        .attr("class", "line")
-        .attr("d", line)
-        .style("stroke-width", 2)
-        .style("stroke", colorMarcados)
-        .style("fill","none");
-
-    // Draw PRT line
-    svg.append("path")
-        .data([approvalData.map(function(d) { return { year: d.year, value: d.PRT }; })])
-        .attr("class", "line")
-        .attr("d", line)
-        .style("stroke-width", 2)
-        .style("stroke", colorRealizados)
-        .style("fill","none");
-
-    // Draw AT line
-    svg.append("path")
-        .data([approvalData.map(function(d) {
-            var performance = passMode? d.AT : d.RT;
-            return { year: d.year, value: performance };
+        .data([approvalData.map(function (d) {
+            return {year: d.year, value: d.PMT};
         })])
         .attr("class", "line")
         .attr("d", line)
-        .style("stroke-width", 2)
+        .style("stroke-width", 2.5)
+        .style("stroke", colorMarcados)
+        .style("fill", "none");
+
+    // Draw PRT line
+    svg.append("path")
+        .data([approvalData.map(function (d) {
+            return {year: d.year, value: d.PRT};
+        })])
+        .attr("class", "line")
+        .attr("d", line)
+        .style("stroke-width", 2.5)
+        .style("stroke", colorRealizados)
+        .style("fill", "none");
+
+    // Draw AT line
+    svg.append("path")
+        .data([approvalData.map(function (d) {
+            var performance = passMode ? d.AT : d.RT;
+            return {year: d.year, value: performance};
+        })])
+        .attr("class", "line")
+        .attr("d", line)
+        .style("stroke-width", 2.5)
         .style("stroke", () => {
-            return passMode? colorAprovados : colorReprovados;
+            return passMode ? colorAprovados : colorReprovados;
         })
-        .style("fill","none");
+        .style("fill", "none");
+
 
     // Tooltip
     const tooltip = d3.select("#approval_bar")
@@ -132,10 +148,27 @@ function drawApprovalChart(){
         tooltip.style("opacity", 1)
     }
     const mousemove = function (event, d) {
-        tooltip
-            .html("Percentagem:")
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY + 10) + "px")
+        const [mouseX] = d3.pointer(event);
+        const xValue = x.invert(mouseX);
+
+        // Find the nearest data point based on the x-axis value
+        const bisectDate = d3.bisector(function(entry) { return entry.year; }).left;
+        const index = bisectDate(d, xValue, 1);
+        const leftData = d[index - 1];
+        const rightData = d[index];
+
+        // Determine which data point is closer to the x-axis value
+        const hoveredData = (rightData && (rightData.year - xValue < xValue - leftData.year)) ? rightData : leftData;
+
+        if (hoveredData) {
+            const xYear = hoveredData.year.getFullYear();
+            const yValue = hoveredData.value;
+
+            tooltip
+                .html("Year: " + xYear + "<br/># de Provas: " + yValue)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY + 10) + "px");
+        }
     }
     const mouseleave = function (d) {
         tooltip.style("opacity", 0)
@@ -151,21 +184,21 @@ function drawApprovalChart(){
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
         .text(() => {
-            return passMode? "Aprovação Anual" : "Reprovação Anual";
+            return passMode ? "Aprovação Anual - " + currentYear : "Reprovação Anual - " + currentYear ;
         });
 }
-
 
 
 function approvalVis() {
     // set the dimensions and margins of the graph
 
     // Parse the Data
-    d3.csv("../../IMT_data/parsed_data/approval_parsed_data_all_years.csv").then(function(data) {
+    d3.csv("../../IMT_data/parsed_data/approval_parsed_data_all_years.csv").then(function (data) {
 
         // Convert strings to numbers
-        data.forEach(function(d) {
-            d.year = +d.year;
+        data.forEach(function (d) {
+            d.year = new Date(d.year);
+            d.hoverYear = +d.year; //this is only here because the tooltip wasnt working otherwise
             d.PMT = +d.PMT;
             d.PRT = +d.PRT;
             d.AT = +d.AT;
@@ -179,7 +212,7 @@ function approvalVis() {
         drawApprovalChart()
 
 
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.error("Error loading the CSV file:", error);
     });
 }

@@ -92,8 +92,12 @@ function drawAgePieChart(data) {
         tooltip.style("opacity", 1)
     }
     const mousemove = function (event, d) {
+        let tooltipText = [
+            "Percentagem de aprovação:" + d.value*100 +"%",
+            "Percentagem de reprovação:" + d.value*100 +"%"
+        ]
         tooltip
-            .html("Percentagem:" + d)
+            .html(tooltipText[d.index])
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY + 10) + "px")
     }
@@ -197,6 +201,32 @@ function drawAgeHistogram(filteredData){
     svg.append('g')
         .call(d3.axisLeft(yScale)
             .tickFormat(d3.format(".0%")));
+
+    const tooltip = d3.select("#group_bar")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip btn btn-info")
+        .style("padding", "5px")
+        .style("position", "absolute")
+
+    const mouseover = function (event, d) {
+        tooltip.style("opacity", 1)
+    }
+    const mousemove = function (event, d) {
+
+        tooltip
+            .html("Percentagem: " + d.averageAT * 100 + "%")
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY + 10) + "px")
+    }
+    const mouseleave = function (d) {
+        tooltip.style("opacity", 0)
+    }
+
+    svg.selectAll(".barAT")
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave);
 }
 function calculateGroups(data) {
         // Define age groups

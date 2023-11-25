@@ -1,11 +1,8 @@
 const titulos = [
     {titulo : "Provas Práticas Marcadas por Género"},
     {titulo: "Provas Práticas Realizadas por Género"},
-    {
-        titulo: () => {
-            return passMode ? "% de Aprovação por Género" : "% de Reprovação por Género"
-        }
-    }
+    {titulo: "% de Aprovação por Género"},
+    {titulo:  "% de Reprovação por Género"}
 ]
 
 var genderData;
@@ -70,9 +67,10 @@ function drawGenderChart(col1, col2, modo){
 
     //Maneira estúpida de confirmar se estamos na vista de reprovação para
     // ajustar o slice nos grupos dos de aprovação para os de reprovação
-    if(modo == 2 && !passMode){
+    if(modo === 2 && !passMode){
         col1 +=2;
         col2 +=2;
+        modo = 3
     }
 
     var subgroups = genderData.columns.slice(col1,col2+1);
@@ -98,7 +96,7 @@ function drawGenderChart(col1, col2, modo){
     var domainMax;
     var y;
 
-    if(modo === 2){
+    if(modo > 1){ //Aprovação ou Reprovação
         domainMax = 1
         y = d3.scaleLinear()
             .domain([0, domainMax])
@@ -146,13 +144,22 @@ function drawGenderChart(col1, col2, modo){
         .attr("class", "tooltip btn btn-info")
         .style("padding", "5px")
         .style("position", "absolute")
+
+    const tooltipText = (i, d)  => {
+        let texts = [
+            "# de Provas por Homens: " + d.PMM + "<br># de Provas por Mulheres: " + d.PMF,
+            "# de Provas por Homens: " + d.PRM + "<br># de Provas por Mulheres: " + d.PRF,
+            "% de Aprovação por Homens: " + d.AM * 100 + "<br>% de Aprovação por Mulheres: " + d.AF * 100,
+            "% de Reprovação por Homens: " + d.RM * 100 + "<br>% de Reprovação por Mulheres: " + d.RF * 100
+        ]
+        return texts[i]
+    }
     const mouseover = function (event, d) {
         tooltip.style("opacity", 1)
     }
     const mousemove = function (event, d) {
-        console.log(d)
         tooltip
-            .html("Percentagem:")
+            .html(tooltipText(modo, d))
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY + 10) + "px")
     }
