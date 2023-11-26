@@ -183,6 +183,7 @@ function drawApprovalChart() {
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
+        .style("font-size", "1.25rem")
         .text(() => {
             return passMode ? "Aprovação Anual - " + currentYear : "Reprovação Anual - " + currentYear ;
         });

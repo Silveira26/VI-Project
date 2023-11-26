@@ -93,8 +93,8 @@ function drawAgePieChart(data) {
     }
     const mousemove = function (event, d) {
         let tooltipText = [
-            "Percentagem de aprovação:" + d.value*100 +"%",
-            "Percentagem de reprovação:" + d.value*100 +"%"
+            "Percentagem de aprovação:" + roundToTwoDecimalPlaces( d.value*100) +"%",
+            "Percentagem de reprovação:" + roundToTwoDecimalPlaces(d.value*100) +"%"
         ]
         tooltip
             .html(tooltipText[d.index])
@@ -115,7 +115,7 @@ function drawAgePieChart(data) {
         .attr("x", 0)
         .attr("y", -height / 2 - 10)
         .attr("text-anchor", "middle")
-        .style("font-size", "16px")
+        .style("font-size", "1.75rem")
         .text("Pie Chart for Age " + data.age);
 
 }
@@ -215,7 +215,7 @@ function drawAgeHistogram(filteredData){
     const mousemove = function (event, d) {
 
         tooltip
-            .html("Percentagem: " + d.averageAT * 100 + "%")
+            .html("Percentagem: " + roundToTwoDecimalPlaces(d.averageAT * 100) + "%")
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY + 10) + "px")
     }

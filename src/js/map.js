@@ -29,7 +29,7 @@ function drawCenterTable(){
     var root = document.getElementById("center_vis");
     root.innerHTML = ""
 
-    document.getElementById("center_title").innerText = titles[approvalValue]
+    document.getElementById("center_title").innerText = titles[approvalValue] + " - " + currentYear
     document.getElementById("center_subtitle").innerText = subtitles[sortingMethod];
 
     d3.csv("../../IMT_data/parsed_data/exam_center_parsed_data_all_years.csv", function (data) {
@@ -56,12 +56,12 @@ function drawCenterTable(){
 
             data = data.sort(sortingMethods[sortingMethod])
 
-            let htmlTable = '<div class="table-responsive"><table class="table table-striped table-hover"><thead><tr><th>#</th><th>Centro de Exames</th><th>Taxa de Aprovação Total</th></tr></thead><tbody>';
+            let htmlTable = '<div style="max-height: 850px"  class="table-responsive overflow-y-auto"><table class="table table-striped table-hover"><thead><tr><th>#</th><th>Centro de Exames</th><th>Taxa de Aprovação Total</th></tr></thead><tbody>';
 
             // Iterate through the data array
             for (let i = 0; i < data.length; i++) {
                 const center = data[i].examcenter;
-                const approval = data[i].TA;
+                const approval = roundToTwoDecimalPlaces(data[i].TA * 100) + "%";
 
                 htmlTable += `<tr><td>${i+1}</td><td>${center}</td><td>${approval}</td></tr>`;
             }
@@ -164,7 +164,7 @@ function drawMap(){
     // Add bubbles to the map
     map.bubbles(bubbleData, {
         popupTemplate: function (geo, data) {
-            return '<div class="hoverinfo"><strong>Distrito: ' + data.name + '<br>Aprovação: ' + data.value+'%</strong></div>';
+            return '<div class="hoverinfo"><strong>Distrito: ' + data.name + '<br>Aprovação: ' + roundToTwoDecimalPlaces(data.value)+'%</strong></div>';
         }
     });
 }

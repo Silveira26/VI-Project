@@ -1,8 +1,8 @@
 const titulos = [
     {titulo : "Provas Práticas Marcadas por Género"},
     {titulo: "Provas Práticas Realizadas por Género"},
-    {titulo: "% de Aprovação por Género"},
-    {titulo:  "% de Reprovação por Género"}
+    {titulo: "Percentagem de Aprovação por Género"},
+    {titulo:  "Percentagem de Reprovação por Género"}
 ]
 
 var genderData;
@@ -149,8 +149,8 @@ function drawGenderChart(col1, col2, modo){
         let texts = [
             "# de Provas por Homens: " + d.PMM + "<br># de Provas por Mulheres: " + d.PMF,
             "# de Provas por Homens: " + d.PRM + "<br># de Provas por Mulheres: " + d.PRF,
-            "% de Aprovação por Homens: " + d.AM * 100 + "<br>% de Aprovação por Mulheres: " + d.AF * 100,
-            "% de Reprovação por Homens: " + d.RM * 100 + "<br>% de Reprovação por Mulheres: " + d.RF * 100
+            "% de Aprovação por Homens: " + roundToTwoDecimalPlaces( d.AM * 100) + "<br>% de Aprovação por Mulheres: " + d.AF * 100,
+            "% de Reprovação por Homens: " + roundToTwoDecimalPlaces(d.RM * 100) + "<br>% de Reprovação por Mulheres: " + d.RF * 100
         ]
         return texts[i]
     }
@@ -176,6 +176,7 @@ function drawGenderChart(col1, col2, modo){
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
+        .style("font-size", "1.25rem")
         .text(titulos[modo].titulo);
 }
 
