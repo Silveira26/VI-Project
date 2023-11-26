@@ -73,8 +73,6 @@ function drawCenterTable(){
 
 function readValuesForMap(districts, filteredData){
 
-    console.log(filteredData)
-
     districts.forEach(element => {
         let index = filteredData.findIndex(obj => obj.district === element.name);
         let approval; //valor de aprovação escolhido

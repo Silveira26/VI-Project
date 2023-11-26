@@ -74,7 +74,6 @@ function drawGenderChart(col1, col2, modo){
     }
 
     var subgroups = genderData.columns.slice(col1,col2+1);
-    console.log(subgroups)
 
     var color = d3.scaleOrdinal()
         .domain(subgroups)

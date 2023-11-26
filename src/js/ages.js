@@ -261,7 +261,6 @@ function calculateGroups(data) {
         };
     });
 
-    console.log(aggregatedData);
     return aggregatedData;
 }
 
@@ -283,8 +282,6 @@ function ageVis() {
             var filteredData = data.filter(function(d) {
                 return d.year === parseInt(currentYear);
             });
-
-            console.log(filteredData)
 
             drawAgePieChart(filteredData[0]);
             drawAgePieChartLegend();
