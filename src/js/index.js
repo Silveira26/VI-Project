@@ -14,3 +14,8 @@ const margin = {top: 30, right: 30, bottom: 70, left: 60},
 
 let currentYear = "2015"; //current selected year across pages
 let passMode = true; // current selected mode. true: Approval, false: Failure
+
+//util for percentages
+function roundToTwoDecimalPlaces(number) {
+    return parseFloat(number.toFixed(2));
+}

@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var selectedYear = parseInt(document.getElementById('year-toggle').value, 10);
         var filteredData = data.filter(d => d.year === selectedYear);
 
+        currentYear = selectedYear
         // Create the connected scatter plot
         createConnectedScatterPlot(filteredData);
     });
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener for year selection
     document.getElementById('year-toggle').addEventListener('change', function(event) {
         var selectedYear = parseInt(event.target.value, 10);
+        currentYear = selectedYear
         var filteredData = data.filter(d => d.year === selectedYear);
         updateConnectedScatterPlot(filteredData);
     });
@@ -86,6 +88,8 @@ function updateConnectedScatterPlot(filteredData) {
         .attr("class", "y-axis")
         .call(d3.axisLeft(yScale).tickFormat(d3.format(".0%"))); // Format ticks as percentages
 
+    document.getElementById("category_title").innerText = "Aprovação por Categoria - " + currentYear
+
     // Create a tooltip
     var tooltip = d3.select("#tooltip");
 
@@ -98,7 +102,7 @@ function updateConnectedScatterPlot(filteredData) {
     // Function to call when mousemove event is detected
     var mousemove = function(event, d) {
         tooltip
-            .html(`Year: ${d.year}<br>Category: ${d.category}<br>Series: ${d.series}<br>Value: ${d3.format(".0%")(d.value)}`)
+            .html(`Ano: ${d.year}<br>Categoria: ${d.category}<br>Aprovação: ${d3.format(".0%")(d.value)}`)
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY + 10) + "px");
     };

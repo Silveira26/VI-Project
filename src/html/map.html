@@ -52,8 +52,8 @@
     </nav>
 
     <div class="container my-3">
-        <div class="row justify-content-center mb-3">
-            <div class="col-md-1">
+        <div class="justify-content-start mb-3 row row-gap-md-5">
+            <div class="col-1">
                 <select id="year-toggle" class="form-select" onchange="updateYear(this.value)">
                     <option value="2015" selected>2015</option>
                     <option value="2016">2016</option>
@@ -62,24 +62,29 @@
                     <option value="2020">2020</option>
                 </select>
             </div>
+
+            <div class="btn-group col-1" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(0)">Teórica</button>
+                <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(1)">Prático</button>
+                <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(2)">Total</button>
+            </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 mb-4">
                 <div class="p-3">
-                  <div id="center_container" class="flex-grow-1">
-                    <div class="btn-group m-2" role="group" aria-label="Basic outlined example">
-                      <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(0)">Teórica</button>
-                      <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(1)">Prático</button>
-                      <button type="button" class="btn btn-outline-primary" onclick="changeApprovalValue(2)">Total</button>
-                    </div>
-                    <div class="btn-group m-2" role="group" aria-label="Basic outlined example">
-                      <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(0)">ASC</button>
-                      <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(1)">DESC</button>
-                      <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(2)">A-Z</button>
-                    </div>
+                  <div id="center_container" class="flex-grow-1 gap-1">
                     <h2 id="center_title"></h2>
-                    <h6 id="center_subtitle"></h6>
+
+                      <div class="d-flex flex-row gap-2 justify-content-between">
+                          <h6 class="flex-grow-1" id="center_subtitle"></h6>
+                          <div class="btn-group w-auto" role="group" aria-label="Basic outlined example">
+                              <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(0)">ASC</button>
+                              <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(1)">DESC</button>
+                              <button type="button" class="btn btn-outline-primary" onclick="changeSortingMethod(2)">A-Z</button>
+                          </div>
+                      </div>
+
                     <div id="center_vis"></div>
                 
                     <div id="center_description" class="accordion">

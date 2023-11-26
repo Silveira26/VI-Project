@@ -165,7 +165,7 @@ function drawApprovalChart() {
             const yValue = hoveredData.value;
 
             tooltip
-                .html("Year: " + xYear + "<br/># de Provas: " + yValue)
+                .html("Ano: " + xYear + "<br/># de Provas: " + yValue)
                 .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY + 10) + "px");
         }
@@ -183,8 +183,9 @@ function drawApprovalChart() {
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
+        .style("font-size", "1.25rem")
         .text(() => {
-            return passMode ? "Aprovação Anual - " + currentYear : "Reprovação Anual - " + currentYear ;
+            return passMode ? "Aprovação Anual" : "Reprovação Anual" ;
         });
 }
 
