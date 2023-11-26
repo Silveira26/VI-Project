@@ -56,23 +56,17 @@ function drawCenterTable(){
 
             data = data.sort(sortingMethods[sortingMethod])
 
-
-            let htmlTable = '<table><tr><th>#</th><th>Centro de Exames</th><th>Taxa de Aprovação Total</th></tr>';
+            let htmlTable = '<div class="table-responsive"><table class="table table-striped table-hover"><thead><tr><th>#</th><th>Centro de Exames</th><th>Taxa de Aprovação Total</th></tr></thead><tbody>';
 
             // Iterate through the data array
             for (let i = 0; i < data.length; i++) {
-                // Extract values from the data object
                 const center = data[i].examcenter;
                 const approval = data[i].TA;
 
-                // Add a new row to the HTML table
                 htmlTable += `<tr><td>${i+1}</td><td>${center}</td><td>${approval}</td></tr>`;
             }
 
-            // Close the HTML table tag
-            htmlTable += '</table>';
-
-
+            htmlTable += '</tbody></table></div>';
             root.innerHTML = htmlTable;
         });
 }

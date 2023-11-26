@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>IMTVis</title>
@@ -8,71 +9,107 @@
     <meta name="description" content="Plataforma de visualização de dados de aprovação do IMT">
     <script src="https://d3js.org/d3.v6.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-light shadow-sm d-flex flex-row p-2 bg-info justify-content-center">
-    <h3 class="text-black">Taxa de Aprovação</h3>
-    <img src="../../assets/logo_IMT.png" class="navbar-brand" style="width: 10%;"/>
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page">Homepage</a>
-        </li>
-        <li class="nav-item ">
-            <a class="nav-link" href="anual.html">Anual</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="category.html">Categoria</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="age.html">Idade</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="map.html">Mapa</a>
-        </li>
-    </ul>
-</nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="homepage.html">
+                <img src="../../assets/logo_IMT.png" alt="Logo" style="width: 50px;">
+                Taxa de Aprovação
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active border-bottom border-primary border-2" aria-current="page"
+                            href="homepage.html">Homepage</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="anual.html">Anual</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="category.html">Categoria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="age.html">Idade</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="map.html">Mapa</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<div id="description_container" class="container-fluid m-5 row-gap-md-5 d-flex flex-column">
-    <div id="description_vis">
-        <h1>Taxa de Aprovação IMT</h1>
-        <br>
-        <div class="border w-50 p-3" >
-            <p><b>Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken.</b></p>
+    <div class="container">
+        <h1 class="mb-4">Taxa de Aprovação IMT</h1>
 
+        <div class="mb-4 p-4 bg-white rounded shadow-sm">
+            <p>O Instituto da Mobilidade e dos Transportes (<b>IMT</b>) é um instituto público integrado na
+                administração indireta do Estado,
+                que tem como missão regular e fiscalizar as atividades dos setores da mobilidade e dos transportes
+                terrestres, fluviais e marítimos
+                e exercer as funções de autoridade nacional de segurança rodoviária.
+            </p>
+            <p>
+                Este projeto tem como objetivo a visualização de dados de aprovação do IMT, de forma a facilitar a
+                compreensão dos dados e a sua análise ao utilizador.
+                Nesta página inicial, é possível visualizar uma breve descrição do projeto, bem como uma descrição das
+                páginas de visualização de dados disponíveis.
+            </p>
+        </div>
+
+        <h3 class="mb-3">Visualizações disponíveis:</h3>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h6><b>Visão Anual</b>:</h6>
+                    <p>
+                        Nesta página é possível observar a taxa de aprovação do IMT ao longo dos anos, bem como a sua
+                        variação por género.
+                        Excecionalmente, nesta página é possível observar a taxa de reprovação do IMT ao longo dos anos.
+                    </p>
+                    <a href="anual.html" class="btn btn-primary">Visualizar</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h6><b>Visão por Idade</b>:</h6>
+                    <p>
+                        Nesta página é possível observar a taxa de aprovação do IMT por idade ao longo dos anos e também
+                        por grupos de idade.
+                    </p>
+                    <a href="age.html" class="btn btn-primary">Visualizar</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h6><b>Visão por Categoria</b>:</h6>
+                    <p>
+                        Nesta página é possível observar a taxa de aprovação do IMT por categoria ao longo dos anos.
+                    </p>
+                    <a href="category.html" class="btn btn-primary">Visualizar</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h6><b>Visão em Mapa</b>:</h6>
+                    <p>
+                        Nesta página é possível observar a taxa de aprovação do IMT por distrito ao longo dos anos ao
+                        utilizar o mapa interativo.
+                    </p>
+                    <a href="map.html" class="btn btn-primary">Visualizar</a>
+                </div>
+            </div>
         </div>
     </div>
-    <h3>Visualizações disponíveis:</h3>
-    <div id="descriptions_items_containers" class="d-flex flex-row column-gap-4">
 
-        <div class="border p-2">
-            <h6>Visão Anual:</h6>
-            <p>Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken.</p>
-
-            <button type="button" class="btn btn-info">Show</button>
-        </div>
-        <div class="border p-2">
-            <h6>Visão por Idade:</h6>
-            <p>Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken.</p>
-
-            <button type="button" class="btn btn-info">Show</button>
-
-        </div>
-        <div class="border p-2">
-            <h6>Visão por Categoria:</h6>
-            <p>Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken.</p>
-
-            <button type="button" class="btn btn-info">Show</button>
-        </div>
-        <div class="border p-2">
-            <h6>Visão em Mapa:</h6>
-            <p>Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken.</p>
-
-            <button type="button" class="btn btn-info">Show</button>
-
-        </div>
-    </div>
-</div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
